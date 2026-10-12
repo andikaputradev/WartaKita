@@ -1,18 +1,51 @@
 "use client";
 
 import { useState } from "react";
+import { createClient } from "@/lib/supabase/client";
 
 export default function AdminPage() {
   const [judul, setJudul] = useState("");
   const [kategori, setKategori] = useState("Nasional");
   const [isi, setIsi] = useState("");
   const [pesan, setPesan] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setPesan(
-      "Form sudah diisi, tetapi penyimpanan ke database belum dihubungkan."
-    );
+    setLoading(true);
+    setPesan("");
+
+    try {
+      const supabase = createClient();
+
+      const { data: { user }, error: userError } =
+        await supabase.auth.getUser();
+
+      if (userError || !user) {
+        setPesan("Silakan login terlebih dahulu.");
+        return;
+      }
+
+      const { error } = await supabase.from("articles").insert({
+        title: judul,
+        category: kategori,
+        content: isi,
+      });
+
+      if (error) {
+        setPesan("Gagal menyimpan: " + error.message);
+        return;
+      }
+
+      setPesan("Berita berhasil disimpan!");
+      setJudul("");
+      setKategori("Nasional");
+      setIsi("");
+    } catch {
+      setPesan("Terjadi kesalahan. Coba lagi.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -45,13 +78,10 @@ export default function AdminPage() {
               onChange={(e) => setKategori(e.target.value)}
               className="w-full rounded-lg border p-3"
             >
-              <option>Nasional</option>
-              <option>Daerah</option>
-              <option>Politik</option>
-              <option>Ekonomi</option>
-              <option>Olahraga</option>
-              <option>Teknologi</option>
-              <option>Lifestyle</option>
+              {["Nasional", "Daerah", "Politik", "Ekonomi",
+                "Olahraga", "Teknologi", "Lifestyle"].map((item) => (
+                <option key={item}>{item}</option>
+              ))}
             </select>
           </div>
 
@@ -68,9 +98,10 @@ export default function AdminPage() {
 
           <button
             type="submit"
-            className="rounded-lg bg-blue-700 px-6 py-3 font-semibold text-white hover:bg-blue-800"
+            disabled={loading}
+            className="rounded-lg bg-blue-700 px-6 py-3 font-semibold text-white hover:bg-blue-800 disabled:opacity-50"
           >
-            Simpan Berita
+            {loading ? "Menyimpan..." : "Simpan Berita"}
           </button>
 
           {pesan && (
