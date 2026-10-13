@@ -1,3 +1,7 @@
-export function DemoNotice() {
+type DemoNoticeProps = {
+  className?: string
+}
+
+export function DemoNotice(_props: DemoNoticeProps) {
   return null
 }
