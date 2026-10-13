@@ -32,7 +32,7 @@ export interface Article {
 }
 
 export const SITE_NAME = 'Nusantara News'
-export const SITE_URL = 'https://nusantaranews.example'
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
 export const categories: Category[] = [
   { slug: 'nasional', name: 'Nasional', description: 'Kebijakan, pemerintahan, dan isu strategis berskala nasional.' },
