@@ -37,11 +37,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: article.title,
     description: article.excerpt,
     alternates: {
-      canonical: `/berita/${article.slug}`,
+      canonical: `/artikel/${article.slug}`,
     },
     openGraph: {
       type: 'article',
-      url: `/berita/${article.slug}`,
+      url: `/artikel/${article.slug}`,
       siteName: SITE_NAME,
       title: article.title,
       description: article.excerpt,
