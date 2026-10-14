@@ -27,16 +27,32 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const article = getArticle(slug)
   if (!article) return { title: 'Berita tidak ditemukan' }
+
+  const imageUrl = /^https?:\/\//i.test(article.image)
+    ? article.image
+    : new URL(article.image.startsWith('/') ? article.image : `/${article.image}`, SITE_URL).toString()
+
   return {
     title: article.title,
     description: article.excerpt,
+    alternates: {
+      canonical: `/berita/${article.slug}`,
+    },
     openGraph: {
       type: 'article',
+      url: `/berita/${article.slug}`,
+      siteName: SITE_NAME,
       title: article.title,
       description: article.excerpt,
-      images: [{ url: article.image, alt: article.imageAlt }],
+      images: [{ url: imageUrl, width: 1200, height: 630, alt: article.imageAlt }],
       publishedTime: article.publishedAt,
       authors: [article.author],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: article.title,
+      description: article.excerpt,
+      images: [imageUrl],
     },
   }
 }
