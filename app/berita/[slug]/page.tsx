@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import { Clock, Eye, MapPin } from 'lucide-react'
 import {
   SITE_NAME,
+  SITE_URL,
   articles,
   formatLongDate,
   formatViews,
