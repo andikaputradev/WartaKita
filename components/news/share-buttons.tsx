@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { Check, Link2, Send, MessageCircle } from 'lucide-react'
 import { SITE_URL } from '@/lib/news'
 
+const ARTICLE_SHARE_BASE = 'https://nusantaranewsidn.com'
+
 function Facebook({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
@@ -22,7 +24,8 @@ function Twitter({ className }: { className?: string }) {
 
 export function ShareButtons({ title, path }: { title: string; path: string }) {
   const [copied, setCopied] = useState(false)
-  const url = `${SITE_URL}${path}`
+  // Always share the canonical production URL, never localhost or a Supabase endpoint.
+  const url = `${ARTICLE_SHARE_BASE}${path}`
   const encodedUrl = encodeURIComponent(url)
   const encodedTitle = encodeURIComponent(title)
 
