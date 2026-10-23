@@ -1,14 +1,18 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Inter, Source_Serif_4 } from 'next/font/google'
+import { Arimo } from 'next/font/google'
 import { BreakingTicker } from '@/components/news/breaking-ticker'
 import { SiteHeader } from '@/components/news/site-header'
 import { SiteFooter } from '@/components/news/site-footer'
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL, isIndexingEnabled } from '@/lib/site'
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
-const sourceSerif = Source_Serif_4({ subsets: ['latin'], variable: '--font-source-serif', display: 'swap' })
+const arimo = Arimo({
+  subsets: ['latin'],
+  weight: ['400', '600', '700'],
+  variable: '--font-arimo',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -77,8 +81,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="id" className={`${inter.variable} ${sourceSerif.variable} bg-background`}>
-      <body className="font-sans antialiased">
+    <html lang="id" className={`${arimo.variable} bg-background`}>
+      <body className="font-sans antialiased text-foreground bg-background">
         <a
           href="#konten-utama"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"

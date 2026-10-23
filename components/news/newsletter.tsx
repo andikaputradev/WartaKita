@@ -4,8 +4,8 @@ import { Mail } from 'lucide-react'
 
 export function Newsletter() {
   return (
-    <section aria-labelledby="judul-newsletter" className="border-y border-border bg-secondary">
-      <div className="mx-auto grid max-w-7xl items-center gap-8 px-4 py-12 md:grid-cols-2">
+    <section id="newsletter" aria-labelledby="judul-newsletter" className="border-y border-border bg-surface">
+      <div className="mx-auto grid max-w-[1160px] items-center gap-8 px-4 py-12 md:grid-cols-2">
         <div>
           <span
             className="flex size-11 items-center justify-center bg-primary text-primary-foreground"
@@ -15,7 +15,7 @@ export function Newsletter() {
           </span>
           <h2
             id="judul-newsletter"
-            className="mt-4 font-serif text-2xl font-bold text-primary text-balance md:text-3xl"
+            className="mt-4 text-2xl font-bold text-primary text-balance md:text-3xl"
           >
             Ringkasan Pagi WartaKita
           </h2>

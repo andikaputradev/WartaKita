@@ -42,7 +42,7 @@ export function Logo({ inverted = false, className, showTagline = true }: LogoPr
       <span className="flex flex-col leading-none">
         <span
           className={cn(
-            'font-serif text-2xl font-bold tracking-tight',
+            'text-2xl font-bold tracking-tight',
             inverted ? 'text-white' : 'text-primary',
           )}
         >

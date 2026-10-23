@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { SITE_NAME, SITE_TAGLINE } from '@/lib/site'
+import { SITE_NAME, SITE_TAGLINE, siteContact } from '@/lib/site'
 
 export const metadata: Metadata = {
   title: 'Tentang Kami',
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function TentangKamiPage() {
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10 md:py-14">
+    <div className="mx-auto max-w-[1160px] px-4 py-10 md:py-14">
       <nav aria-label="Breadcrumb" className="text-xs text-muted-foreground">
         <ol className="flex items-center gap-1.5">
           <li>
@@ -25,7 +25,7 @@ export default function TentangKamiPage() {
       </nav>
 
       <header className="mt-6 border-b border-border pb-6">
-        <h1 className="font-serif text-3xl font-bold text-primary md:text-4xl">Tentang {SITE_NAME}</h1>
+        <h1 className="text-3xl font-bold text-primary md:text-4xl">Tentang {SITE_NAME}</h1>
         <p className="mt-2 text-base text-muted-foreground">{SITE_TAGLINE}</p>
       </header>
 
@@ -49,13 +49,16 @@ export default function TentangKamiPage() {
           </p>
           <div className="mt-4 space-y-2 text-sm">
             <p>
-              <strong className="text-foreground">Badan Hukum:</strong> [Perlu dilengkapi konfigurasi pemilik redaksi]
+              <strong className="text-foreground">Pemimpin Umum / Penanggung Jawab:</strong> {siteContact.leadName}
             </p>
             <p>
-              <strong className="text-foreground">Nomor Pengesahan:</strong> [Perlu dilengkapi konfigurasi pemilik redaksi]
+              <strong className="text-foreground">Domisili Kantor Redaksi:</strong> {siteContact.address}
             </p>
             <p>
-              <strong className="text-foreground">Domisili Kantor:</strong> [Perlu dilengkapi konfigurasi pemilik redaksi]
+              <strong className="text-foreground">Badan Hukum:</strong> [Perlu dilengkapi konfigurasi legalitas pemilik redaksi]
+            </p>
+            <p>
+              <strong className="text-foreground">Nomor Pengesahan:</strong> [Perlu dilengkapi konfigurasi legalitas pemilik redaksi]
             </p>
           </div>
         </section>

@@ -18,13 +18,13 @@ export function BreakingTicker() {
       role="region"
       aria-label="Berita terkini"
     >
-      <div className="mx-auto flex max-w-7xl items-stretch">
+      <div className="mx-auto flex max-w-[1160px] items-stretch">
         <div className="flex shrink-0 items-center gap-2 bg-highlight px-3 py-1.5 text-[11px] font-bold uppercase tracking-widest text-highlight-foreground sm:px-4">
           <span className="relative flex size-2" aria-hidden="true">
             <span className="absolute inline-flex size-full animate-ping rounded-full bg-white/70 motion-reduce:hidden" />
             <span className="relative inline-flex size-2 rounded-full bg-white" />
           </span>
-          Breaking
+          Terkini
         </div>
 
         <button

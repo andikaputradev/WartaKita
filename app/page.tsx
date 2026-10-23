@@ -1,19 +1,26 @@
-import { articles, categories, formatShortDate, getArticlesByCategory, sortByDate } from '@/lib/news'
-import { FeaturedSection } from '@/components/news/featured-section'
-import { ArticleCard } from '@/components/news/article-card'
-import { SectionHeading } from '@/components/news/section-heading'
+import {
+  articles,
+  categories,
+  formatShortDate,
+  getArticlesByCategory,
+  sortByDate,
+} from '@/lib/news'
+import { HeadlineBlock } from '@/components/news/headline-block'
+import { NewsFeed } from '@/components/news/news-feed'
 import { NewsSidebar } from '@/components/news/news-sidebar'
+import { ChannelBlock, PhotoBlock } from '@/components/news/channel-block'
 import { RegionalNews, type RegionalItem } from '@/components/news/regional-news'
 import { Newsletter } from '@/components/news/newsletter'
 
 export default function HomePage() {
-  const nonRegional = sortByDate(articles.filter((a) => a.category !== 'daerah'))
-  const main = nonRegional[0]
-  const secondary = nonRegional.slice(1, 4)
-  const usedSlugs = new Set(nonRegional.slice(0, 4).map((a) => a.slug))
-  const latest = nonRegional.filter((a) => !usedSlugs.has(a.slug)).slice(0, 6)
+  const sorted = sortByDate(articles)
+  const nonRegional = sorted.filter((a) => a.category !== 'daerah')
 
-  const regional: RegionalItem[] = getArticlesByCategory('daerah').map((a) => ({
+  const headlineArticle = nonRegional[0] ?? articles[0]!
+  const briefArticles = nonRegional.slice(1, 6)
+  const feedArticles = sorted.slice(0, 8)
+
+  const regionalItems: RegionalItem[] = getArticlesByCategory('daerah').map((a) => ({
     slug: a.slug,
     title: a.title,
     province: a.province ?? 'Indonesia',
@@ -23,60 +30,83 @@ export default function HomePage() {
     dateLabel: formatShortDate(a.publishedAt),
   }))
 
-  const channelBlocks = categories
+  const featuredChannels = categories
     .filter((c) => c.slug !== 'daerah')
-    .map((c) => ({ category: c, items: getArticlesByCategory(c.slug).slice(0, 3) }))
-    .filter((block) => block.items.length > 0)
+    .map((c) => ({
+      category: c.slug,
+      title: c.name,
+      href: `/kategori/${c.slug}`,
+      articles: getArticlesByCategory(c.slug),
+    }))
+    .filter((block) => block.articles.length > 0)
 
   return (
-    <>
-      <div className="mx-auto max-w-7xl px-4 pt-6 md:pt-8">
-        {main && <FeaturedSection main={main} secondary={secondary} />}
+    <div className="flex flex-col gap-8 md:gap-10">
+      {/* 1. Headline Block (1 Main 16:9 + 5 Briefs) */}
+      <div className="mx-auto w-full max-w-[1160px] px-4 pt-4 md:pt-6">
+        <HeadlineBlock headline={headlineArticle} briefs={briefArticles} />
       </div>
 
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 lg:grid-cols-3 lg:gap-8">
-        <section aria-labelledby="judul-terbaru" className="lg:col-span-2">
-          <SectionHeading title="Berita Terbaru" id="judul-terbaru" href="/cari?q=" linkLabel="Indeks" />
-          <ul className="grid gap-x-6 gap-y-8 sm:grid-cols-2">
-            {latest.map((article) => (
-              <li key={article.slug}>
-                <ArticleCard article={article} showExcerpt />
-              </li>
-            ))}
-          </ul>
-        </section>
-        <NewsSidebar />
-      </div>
+      {/* 2. Main Content Grid: Left 8 cols (NewsFeed & Channels) vs Right 4 cols (Sidebar) */}
+      <div className="mx-auto w-full max-w-[1160px] px-4">
+        <div className="grid gap-8 lg:grid-cols-12 lg:gap-8">
+          {/* Main Column */}
+          <div className="lg:col-span-8 flex flex-col gap-10">
+            {/* Chronological NewsFeed with Real Links Pagination */}
+            <NewsFeed
+              articles={feedArticles}
+              currentPage={1}
+              totalPages={3}
+              basePath="/cari"
+              title="Berita Terkini Hari Ini"
+            />
 
-      <RegionalNews items={regional} />
+            {/* Photo Gallery Block */}
+            <PhotoBlock articles={sorted.slice(0, 4)} />
 
-      <div className="mx-auto max-w-7xl px-4 py-12">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
-          {channelBlocks.map(({ category, items }) => (
-            <section key={category.slug} aria-labelledby={`kanal-${category.slug}`}>
-              <SectionHeading
-                title={category.name}
-                id={`kanal-${category.slug}`}
-                href={`/kategori/${category.slug}`}
-                className="mb-4"
-              />
-              <div className="flex flex-col divide-y divide-border">
-                {items.map((article, i) => (
-                  <div key={article.slug} className={i === 0 ? 'pb-4' : 'py-4 last:pb-0'}>
-                    {i === 0 ? (
-                      <ArticleCard article={article} />
-                    ) : (
-                      <ArticleCard article={article} variant="horizontal" />
-                    )}
-                  </div>
-                ))}
-              </div>
-            </section>
-          ))}
+            {/* Channel Blocks */}
+            <div className="flex flex-col gap-10">
+              {featuredChannels.slice(0, 3).map((block) => (
+                <ChannelBlock
+                  key={block.category}
+                  category={block.category}
+                  title={block.title}
+                  href={block.href}
+                  articles={block.articles}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Sidebar Column: Fixed 300px width on desktop */}
+          <div className="lg:col-span-4 lg:sticky lg:top-36 lg:self-start">
+            <NewsSidebar />
+          </div>
         </div>
       </div>
 
+      {/* 3. Regional News Section */}
+      <RegionalNews items={regionalItems} />
+
+      {/* 4. Additional Channel Blocks */}
+      {featuredChannels.length > 3 && (
+        <div className="mx-auto w-full max-w-[1160px] px-4">
+          <div className="grid gap-8 md:grid-cols-2">
+            {featuredChannels.slice(3).map((block) => (
+              <ChannelBlock
+                key={block.category}
+                category={block.category}
+                title={block.title}
+                href={block.href}
+                articles={block.articles}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 5. Newsletter Section */}
       <Newsletter />
-    </>
+    </div>
   )
 }

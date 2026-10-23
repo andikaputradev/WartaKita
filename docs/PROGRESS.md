@@ -3,7 +3,7 @@
 Dokumen ini memantau status eksekusi tiap fase pengerjaan rebrand portal berita WartaKita dan mendokumentasikan temuan teknis yang dialokasikan ke fase terkait.
 
 Status Terakhir Diperbarui: 23 Oktober 2026
-Fase Aktif Saat Ini: Fase 1 (Selesai)
+Fase Aktif Saat Ini: Fase 2 (Selesai)
 
 ---
 
@@ -13,7 +13,7 @@ Fase Aktif Saat Ini: Fase 1 (Selesai)
 | :--- | :--- | :--- | :--- |
 | **Fase 0** | **Audit dan Baseline** | **SELESAI** | Audit menyeluruh, pemetaan rute/komponen/data flow, audit dependensi pnpm, pengukuran baseline bundle JS & Lighthouse, serta inventarisasi merek lama. Tidak ada kode aplikasi yang diubah. |
 | **Fase 1** | **Fondasi, Pembersihan Merek & SEO Inti** | **SELESAI** | Upgrade keamanan Next.js 16.4.2, pembersihan merek Nusantara News ke WartaKita di seluruh lapisan, kanonisasi URL `/berita/[slug]`, 301 redirect permanen `/artikel/[slug]`, pembuatan sitemap/robots/manifest/RSS, penambahan HSTS & X-Frame-Options, instalasi ESLint 9 & Prettier, penambahan strict & noUncheckedIndexedAccess, pembuatan 8 halaman footer fungsional, dan ticker accessible. |
-| **Fase 2** | **Desain, Aksesibilitas & Optimasi Media** | Belum Dimulai | Optimasi media gambar (mengatasi beban 26,64 MB dan LCP 46,9 s), penonaktifan `images.unoptimized`, dan penetapan font terukur. |
+| **Fase 2** | **Desain Sistem & Layout Portal Berita Utama** | **SELESAI** | Pengukuran DevTools CDP rujukan news.detik.com, token desain tiga lapis (primitif, semantik, komponen) dengan @theme Tailwind 4, font tunggal Arimo (OFL self-hosted) menghapus Inter dan Source Serif 4, kontras WCAG 2.2 AA/AAA 100% lulus, komponen terstruktur (UtilityBar, Header, ChannelNav, BreakingBar, HeadlineBlock, NewsFeed, Sidebar, ChannelBlock, Footer multi-kolom), util RelativeTime tanpa mismatch hydration via useSyncExternalStore, responsif penuh 360 dan 1280 px tanpa horizontal scroll. |
 | **Fase 3** | **Supabase Auth, RBAC & Dashboard Admin** | Belum Dimulai | Implementasi Supabase Server Client berbasis cookies, proteksi middleware server-side pada `/admin`, role-based access control (admin, editor, writer), dan skema migrasi tabel PostgreSQL. |
 | **Fase 4** | **Testing, Audit Akhir & Kesiapan Produksi** | Belum Dimulai | Verifikasi menyeluruh end-to-end, audit Lighthouse ulang, penetrasi keamanan, dan kesiapan deploy ke Vercel. |
 
@@ -43,12 +43,29 @@ Fase Aktif Saat Ini: Fase 1 (Selesai)
 
 ---
 
-## 3. Catatan Temuan yang Ditangguhkan ke Fase Berikutnya
+## 3. Status Pekerjaan Fase 2 (Desain Sistem & Layout Portal Berita Utama)
 
-### Alokasi ke Fase 2 (Desain, Aksesibilitas & Optimasi Media)
-- [ ] Hapus pengaturan `unoptimized: true` dari `next.config.mjs` agar pipeline optimasi gambar Next.js berjalan (WebP/AVIF responsif).
-- [ ] Kompresi dan optimasi ukuran fisik seluruh 14 berkas gambar di `public/images/` yang saat ini membebani 26,64 MB.
-- [ ] Lakukan benchmarking tipografi dan tentukan font kanonis situs berdasarkan pengukuran web vitals.
+- [x] Pengukuran rujukan news.detik.com via Chromium 150 CDP getComputedStyle pada 1366 px dan 390 px (terdokumentasi di `docs/design-reference.md`).
+- [x] Penetapan font tunggal Arimo (OFL self-hosted via `next/font/google`), menghapus total Inter dan Source Serif 4.
+- [x] Token tiga lapis (primitif, semantik, komponen) di `app/globals.css` dengan `@theme inline` Tailwind 4 dan dukungan penuh mode gelap serta `prefers-reduced-motion`.
+- [x] Seluruh rasio kontras warna terhitung dan lulus WCAG 2.2 Level AA dan AAA.
+- [x] Komponen `UtilityBar`: tanggal WIB, pintasan Terpopuler, Indeks, Newsletter, dan media sosial.
+- [x] Komponen `SiteHeader`: Logo WartaKita, formulir pencarian GET `/cari` yang aksesibel, drawer navigasi seluler.
+- [x] Komponen `ChannelNav`: navigasi kategori dengan scroll horizontal di layar sempit dan dropdown provinsi pada menu Daerah.
+- [x] Komponen `HeadlineBlock`: 1 berita utama 16:9 (prioritas LCP tunggal) didampingi 5 berita ringkas thumbnail kecil.
+- [x] Komponen `NewsFeed`: aliran berita kronologis dengan paginasi link URL nyata (bukan sekadar handler JavaScript).
+- [x] Komponen `NewsSidebar`: Berita Terpopuler bernomor 1-5, Tag Terpopuler, Pilihan Redaksi, dan AdSlot 300x250 berdimensi tetap.
+- [x] Komponen `ChannelBlock` dan `PhotoBlock`: blok per kanal bergaris aksen dan galeri visual.
+- [x] Komponen `SiteFooter`: multi-kolom rapi (Kanal, Daerah, Informasi & Regulasi, Hak Cipta, dan Kontak Redaksi Wahyu Andika Putra).
+- [x] Komponen `ArticleCard` 4 varian: large, medium, horizontal, text, disertai `ArticleCardSkeleton`, `EmptyState`, dan `ErrorState`.
+- [x] Utilitas `lib/time.ts` dan komponen `components/news/relative-time.tsx` menggunakan `useSyncExternalStore` untuk mencegah mismatch hydration.
+- [x] Halaman artikel detail (`app/berita/[slug]/page.tsx`): breadcrumb, judul (h1), baris penulis, tanggal terbit WIB, gambar sampul beresolusi tetap dengan keterangan dan kredit, isi kolom baca 680 px, kotak 'Baca Juga', tag, share buttons, dan artikel terkait.
+- [x] Verifikasi responsivitas pada 360 px dan 1280 px tanpa horizontal scroll (`hasHorizontalScroll: false` pada semua rute).
+- [x] Hapus pengaturan `unoptimized: true` pada `next.config.mjs` dan aktifkan format gambar modern AVIF dan WebP.
+
+---
+
+## 4. Catatan Temuan yang Ditangguhkan ke Fase Berikutnya
 
 ### Alokasi ke Fase 3 (Supabase Auth, RBAC & Dashboard Admin)
 - [ ] Pasang `@supabase/supabase-js` sebagai direct dependency untuk mendampingi `@supabase/ssr`.

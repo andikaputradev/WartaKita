@@ -4,7 +4,7 @@ const nextConfig = {
     agentUpgrade: 'security',
   },
   images: {
-    unoptimized: true,
+    formats: ['image/avif', 'image/webp'],
   },
   async redirects() {
     return [

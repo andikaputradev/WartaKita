@@ -41,23 +41,35 @@ export interface SiteSocials {
   facebook: string | null
   instagram: string | null
   youtube: string | null
+  github: string | null
+  linkedin: string | null
+  telegram: string | null
+  tiktok: string | null
 }
 
 export interface SiteContact {
+  leadName: string
   email: string | null
   address: string | null
   phone: string | null
+  website: string | null
   socials: SiteSocials
 }
 
 export const siteContact: SiteContact = {
-  email: process.env.NEXT_PUBLIC_SITE_EMAIL?.trim() || null,
-  address: process.env.NEXT_PUBLIC_SITE_ADDRESS?.trim() || null,
-  phone: process.env.NEXT_PUBLIC_SITE_PHONE?.trim() || null,
+  leadName: 'Wahyu Andika Putra',
+  email: process.env.NEXT_PUBLIC_SITE_EMAIL?.trim() || 'wahyuandikaputra.co.id@gmail.com',
+  address: process.env.NEXT_PUBLIC_SITE_ADDRESS?.trim() || 'Wonosobo / Semarang, Jawa Tengah, Indonesia',
+  phone: process.env.NEXT_PUBLIC_SITE_PHONE?.trim() || '+6287730139582',
+  website: 'https://andikadev.com',
   socials: {
-    twitter: process.env.NEXT_PUBLIC_SITE_TWITTER?.trim() || null,
-    facebook: process.env.NEXT_PUBLIC_SITE_FACEBOOK?.trim() || null,
-    instagram: process.env.NEXT_PUBLIC_SITE_INSTAGRAM?.trim() || null,
+    twitter: process.env.NEXT_PUBLIC_SITE_TWITTER?.trim() || 'https://x.com/andikaputradev',
+    facebook: process.env.NEXT_PUBLIC_SITE_FACEBOOK?.trim() || 'https://facebook.com/andikaputradev',
+    instagram: process.env.NEXT_PUBLIC_SITE_INSTAGRAM?.trim() || 'https://instagram.com/andikaputradev',
     youtube: process.env.NEXT_PUBLIC_SITE_YOUTUBE?.trim() || null,
+    github: 'https://github.com/andikaputradev',
+    linkedin: 'https://linkedin.com/in/wahyu-andika-putra',
+    telegram: 'https://t.me/andikaputradev',
+    tiktok: 'https://tiktok.com/@andikaputradev',
   },
 }

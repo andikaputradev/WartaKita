@@ -25,11 +25,11 @@ export function RegionalNews({ items }: { items: RegionalItem[] }) {
 
   return (
     <section aria-labelledby="judul-daerah" className="bg-primary py-12 text-primary-foreground">
-      <div className="mx-auto max-w-7xl px-4">
+      <div className="mx-auto max-w-[1160px] px-4">
         <div className="mb-6 flex flex-col gap-1 border-b border-white/20 pb-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-[11px] font-bold uppercase tracking-widest text-highlight">Dari Sabang sampai Merauke</p>
-            <h2 id="judul-daerah" className="mt-1 font-serif text-2xl font-bold md:text-3xl">
+            <h2 id="judul-daerah" className="mt-1 text-2xl font-bold md:text-3xl">
               Kabar Daerah
             </h2>
           </div>
@@ -77,7 +77,7 @@ export function RegionalNews({ items }: { items: RegionalItem[] }) {
                     {item.province}
                   </span>
                 </div>
-                <h3 className="mt-3 font-serif text-lg font-semibold leading-snug text-pretty group-hover:underline group-hover:decoration-highlight group-hover:underline-offset-4">
+                <h3 className="mt-3 text-lg font-semibold leading-snug text-pretty group-hover:underline group-hover:decoration-highlight group-hover:underline-offset-4">
                   <Link href={`/berita/${item.slug}`} className="after:absolute after:inset-0">
                     {item.title}
                   </Link>

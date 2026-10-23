@@ -44,6 +44,22 @@ export const categories: Category[] = [
   { slug: 'lifestyle', name: 'Lifestyle', description: 'Budaya, kuliner, wisata, dan gaya hidup.' },
 ]
 
+export const indonesianProvinces = [
+  'DKI Jakarta',
+  'Jawa Barat',
+  'Jawa Tengah',
+  'Jawa Timur',
+  'Banten',
+  'DI Yogyakarta',
+  'Bali',
+  'Sumatera Utara',
+  'Sumatera Barat',
+  'Riau',
+  'Kalimantan Timur',
+  'Sulawesi Selatan',
+  'Papua Barat Daya',
+] as const
+
 export const articles: Article[] = [
   {
     slug: 'pemindahan-asn-ke-ikn-gelombang-pertama-januari-2027',
@@ -409,6 +425,10 @@ export function sortByDate(list: Article[]) {
 
 export function getPopularArticles(limit = 5) {
   return [...articles].sort((a, b) => b.views - a.views).slice(0, limit)
+}
+
+export function getEditorialPicks(limit = 3): Article[] {
+  return articles.filter((a) => a.category === 'nasional' || a.category === 'politik').slice(0, limit)
 }
 
 export function getRelatedArticles(article: Article, limit = 3) {

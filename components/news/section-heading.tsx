@@ -21,7 +21,7 @@ export function SectionHeading({
     <div className={cn('mb-5 flex items-end justify-between border-b-2 border-primary', className)}>
       <Tag
         id={id}
-        className="relative -mb-0.5 border-b-2 border-highlight pb-2 font-serif text-xl font-bold text-primary md:text-2xl"
+        className="relative -mb-0.5 border-b-2 border-highlight pb-2 text-xl font-bold text-primary md:text-2xl"
       >
         {title}
       </Tag>
