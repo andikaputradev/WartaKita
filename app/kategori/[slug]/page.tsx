@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation'
 import { categories, getArticlesByCategory, getCategory } from '@/lib/news'
 import { ArticleCard } from '@/components/news/article-card'
 import { NewsSidebar } from '@/components/news/news-sidebar'
-import { DemoNotice } from '@/components/news/demo-notice'
 
 export function generateStaticParams() {
   return categories.map((c) => ({ slug: c.slug }))
@@ -26,7 +25,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
   if (!category) notFound()
 
   const list = getArticlesByCategory(slug)
-  const [lead, ...rest] = list
+  const lead = list[0]
+  const rest = list.slice(1)
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 md:py-10">
@@ -50,11 +50,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         <p className="mt-3 max-w-2xl leading-relaxed text-muted-foreground">{category.description}</p>
       </header>
 
-      <DemoNotice className="mt-6" />
-
       <div className="mt-8 grid gap-10 lg:grid-cols-3 lg:gap-8">
         <div className="lg:col-span-2">
-          {list.length === 0 ? (
+          {!lead ? (
             <p className="text-muted-foreground">Belum ada berita di kanal ini.</p>
           ) : (
             <>

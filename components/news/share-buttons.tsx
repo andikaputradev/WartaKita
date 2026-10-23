@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Check, Link2, Send, MessageCircle } from 'lucide-react'
-const ARTICLE_SHARE_BASE = 'https://nusantaranewsidn.com'
+import { SITE_URL } from '@/lib/site'
 
 function Facebook({ className }: { className?: string }) {
   return (
@@ -22,9 +22,8 @@ function Twitter({ className }: { className?: string }) {
 
 export function ShareButtons({ title, path }: { title: string; path: string }) {
   const [copied, setCopied] = useState(false)
-  // Always share the canonical production URL, never localhost or a Supabase endpoint.
-  const canonicalPath = path.replace(/^\/berita\//, '/artikel/')
-  const url = `${ARTICLE_SHARE_BASE}${canonicalPath}`
+  const cleanPath = path.startsWith('/') ? path : `/${path}`
+  const url = `${SITE_URL}${cleanPath}`
   const encodedUrl = encodeURIComponent(url)
   const encodedTitle = encodeURIComponent(title)
 

@@ -29,10 +29,10 @@ export interface Article {
   tags: string[]
   views: number
   body: string[]
+  is_demo?: boolean
 }
 
-export const SITE_NAME = 'Nusantara News'
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://nusantaranewsidn.com').replace(/\/$/, '')
+export { SITE_NAME, SITE_URL } from '@/lib/site'
 
 export const categories: Category[] = [
   { slug: 'nasional', name: 'Nasional', description: 'Kebijakan, pemerintahan, dan isu strategis berskala nasional.' },
@@ -58,9 +58,10 @@ export const articles: Article[] = [
     readingMinutes: 6,
     image: '/images/nasional-ikn.png',
     imageAlt: 'Kawasan inti pemerintahan Ibu Kota Nusantara yang sedang dibangun saat matahari terbenam',
-    imageCaption: 'Kawasan Inti Pusat Pemerintahan IKN, Kalimantan Timur. (Ilustrasi demo)',
+    imageCaption: 'Kawasan Inti Pusat Pemerintahan IKN, Kalimantan Timur.',
     tags: ['IKN', 'ASN', 'Ibu Kota Nusantara', 'Kebijakan Publik'],
     views: 48210,
+    is_demo: true,
     body: [
       'Pemerintah memastikan pemindahan aparatur sipil negara (ASN) ke Ibu Kota Nusantara (IKN) akan dimulai pada Januari 2027. Gelombang pertama mencakup sekitar 12.000 pegawai dari 16 kementerian dan lembaga yang kantornya telah rampung dibangun di Kawasan Inti Pusat Pemerintahan.',
       'Kepala Otorita IKN dalam konferensi pers di Jakarta, Senin (12/10/2026), menyebut kesiapan hunian vertikal untuk ASN telah mencapai 87 persen. Fasilitas pendukung seperti sekolah, puskesmas, dan transportasi listrik otonom juga dijadwalkan beroperasi sebelum akhir tahun.',
@@ -81,9 +82,10 @@ export const articles: Article[] = [
     readingMinutes: 5,
     image: '/images/politik-sidang.png',
     imageAlt: 'Suasana rapat paripurna di ruang sidang parlemen dengan anggota dewan duduk berbaris',
-    imageCaption: 'Rapat paripurna di Kompleks Parlemen, Senayan, Jakarta. (Ilustrasi demo)',
+    imageCaption: 'Rapat paripurna di Kompleks Parlemen, Senayan, Jakarta.',
     tags: ['DPR', 'Data Pribadi', 'Regulasi', 'Keamanan Siber'],
     views: 31540,
+    is_demo: true,
     body: [
       'Dewan Perwakilan Rakyat (DPR) mengesahkan aturan turunan tentang perlindungan data pribadi dalam rapat paripurna di Senayan, Jakarta. Seluruh fraksi menyatakan setuju setelah pembahasan intensif selama empat bulan.',
       'Aturan baru ini memperkuat kewenangan lembaga pengawas data pribadi, termasuk hak melakukan audit mendadak terhadap pengendali data. Korporasi yang terbukti lalai dapat dikenai denda administratif hingga 2 persen dari pendapatan tahunan.',
@@ -104,9 +106,10 @@ export const articles: Article[] = [
     readingMinutes: 4,
     image: '/images/ekonomi-pelabuhan.png',
     imageAlt: 'Derek pelabuhan memuat peti kemas berwarna-warni ke kapal kargo saat fajar',
-    imageCaption: 'Aktivitas bongkar muat peti kemas di pelabuhan. (Ilustrasi demo)',
+    imageCaption: 'Aktivitas bongkar muat peti kemas di pelabuhan.',
     tags: ['Ekspor', 'Perdagangan', 'Pelabuhan', 'Hilirisasi'],
     views: 22870,
+    is_demo: true,
     body: [
       'Badan Pusat Statistik mencatat nilai ekspor nonmigas Indonesia pada kuartal III 2026 tumbuh 8,4 persen secara tahunan. Kenaikan ini ditopang produk hilirisasi nikel, minyak sawit olahan, serta komponen elektronik.',
       'Seiring lonjakan tersebut, Pelabuhan Tanjung Priok mencatat rekor bongkar muat 2,1 juta TEUs dalam satu kuartal, tertinggi sepanjang sejarah operasionalnya.',
@@ -126,9 +129,10 @@ export const articles: Article[] = [
     readingMinutes: 4,
     image: '/images/olahraga-timnas.png',
     imageAlt: 'Para pemain berseragam merah merayakan gol di stadion yang penuh penonton pada malam hari',
-    imageCaption: 'Pemain merayakan gol kemenangan di menit akhir. (Ilustrasi demo)',
+    imageCaption: 'Pemain merayakan gol kemenangan di menit akhir.',
     tags: ['Timnas', 'Sepak Bola', 'Piala Asia', 'GBK'],
     views: 56320,
+    is_demo: true,
     body: [
       'Tim nasional Indonesia meraih kemenangan dramatis 2-1 atas Vietnam dalam lanjutan kualifikasi Piala Asia di Stadion Utama Gelora Bung Karno, Jakarta, Minggu (11/10/2026) malam.',
       'Indonesia sempat tertinggal lebih dulu pada menit ke-23 sebelum menyamakan kedudukan lewat tendangan bebas di awal babak kedua. Gol penentu lahir dari sundulan bek tengah pada menit ke-88 memanfaatkan sepak pojok.',
@@ -149,9 +153,10 @@ export const articles: Article[] = [
     readingMinutes: 5,
     image: '/images/teknologi-startup.png',
     imageAlt: 'Para insinyur perangkat lunak muda bekerja dengan laptop di kantor startup modern',
-    imageCaption: 'Tim pengembang di kantor startup di Jakarta Selatan. (Ilustrasi demo)',
+    imageCaption: 'Tim pengembang di kantor startup di Jakarta Selatan.',
     tags: ['Startup', 'Kecerdasan Buatan', 'Pendanaan', 'Bahasa Daerah'],
     views: 27410,
+    is_demo: true,
     body: [
       'Sebuah perusahaan rintisan kecerdasan buatan asal Jakarta mengumumkan pendanaan Seri B senilai Rp 1,2 triliun yang dipimpin konsorsium investor regional.',
       'Pendiri perusahaan menyebut dana tersebut akan dipakai untuk melatih model bahasa yang mampu memahami lebih dari 40 bahasa daerah, termasuk Jawa, Sunda, Bugis, Minangkabau, dan sejumlah bahasa di Papua.',
@@ -172,9 +177,10 @@ export const articles: Article[] = [
     readingMinutes: 4,
     image: '/images/lifestyle-batik.png',
     imageAlt: 'Tangan perajin melukis malam pada kain batik menggunakan canting',
-    imageCaption: 'Perajin batik tulis di Pekalongan, Jawa Tengah. (Ilustrasi demo)',
+    imageCaption: 'Perajin batik tulis di Pekalongan, Jawa Tengah.',
     tags: ['Batik', 'UMKM', 'Budaya', 'Fesyen'],
     views: 18960,
+    is_demo: true,
     body: [
       'Permintaan batik tulis dari kalangan anak muda melonjak tajam dalam beberapa bulan terakhir. Sejumlah perajin di Pekalongan, Jawa Tengah, mengaku kewalahan memenuhi pesanan yang datang dari berbagai kota.',
       'Salah satu pemilik rumah batik menyebut pesanannya naik hingga tiga kali lipat. Kebanyakan pembeli berusia 20-30 tahun dan mengetahui produknya dari konten video pendek di media sosial.',
@@ -195,9 +201,10 @@ export const articles: Article[] = [
     readingMinutes: 4,
     image: '/images/daerah-bali.png',
     imageAlt: 'Petani bekerja di sawah terasering Bali yang diselimuti kabut pagi',
-    imageCaption: 'Sawah terasering di Kabupaten Tabanan, Bali. (Ilustrasi demo)',
+    imageCaption: 'Sawah terasering di Kabupaten Tabanan, Bali.',
     tags: ['Bali', 'Pertanian', 'Subak', 'Teknologi Pertanian'],
     views: 15230,
+    is_demo: true,
     body: [
       'Kelompok subak di Kabupaten Tabanan, Bali, mulai memadukan sistem irigasi tradisional dengan sensor kelembapan tanah berbasis tenaga surya. Hasilnya, produksi padi musim ini naik sekitar 15 persen.',
       'Ketua subak setempat menjelaskan, sensor membantu menentukan waktu pembagian air yang lebih tepat tanpa mengubah prinsip Tri Hita Karana yang menjadi landasan subak.',
@@ -217,9 +224,10 @@ export const articles: Article[] = [
     readingMinutes: 3,
     image: '/images/daerah-toba.png',
     imageAlt: 'Rumah adat Batak di tepi Danau Toba dengan latar pegunungan',
-    imageCaption: 'Rumah adat Batak di tepi Danau Toba, Sumatera Utara. (Ilustrasi demo)',
+    imageCaption: 'Rumah adat Batak di tepi Danau Toba, Sumatera Utara.',
     tags: ['Danau Toba', 'Pariwisata', 'Budaya Batak', 'Sumatera Utara'],
     views: 12480,
+    is_demo: true,
     body: [
       'Pemerintah Provinsi Sumatera Utara menargetkan 200 ribu wisatawan mancanegara selama penyelenggaraan Festival Danau Toba 2026 yang digelar pekan depan.',
       'Festival menghadirkan pertunjukan tortor, lomba perahu tradisional solu bolon, pameran ulos, serta konser musik yang melibatkan musisi lokal dan nasional.',
@@ -239,9 +247,10 @@ export const articles: Article[] = [
     readingMinutes: 4,
     image: '/images/daerah-raja-ampat.png',
     imageAlt: 'Foto udara gugusan pulau karst hijau dan laut biru toska di Raja Ampat',
-    imageCaption: 'Gugusan pulau karst di Raja Ampat, Papua Barat Daya. (Ilustrasi demo)',
+    imageCaption: 'Gugusan pulau karst di Raja Ampat, Papua Barat Daya.',
     tags: ['Raja Ampat', 'Konservasi', 'Pariwisata', 'Papua'],
     views: 20110,
+    is_demo: true,
     body: [
       'Pemerintah Kabupaten Raja Ampat akan memberlakukan kuota harian bagi penyelam di 12 titik selam utama mulai November 2026. Setiap titik dibatasi maksimal 150 penyelam per hari.',
       'Kebijakan ini diambil setelah survei terbaru menunjukkan sebagian terumbu karang mengalami tekanan akibat aktivitas wisata yang padat dan kenaikan suhu laut.',
@@ -261,9 +270,10 @@ export const articles: Article[] = [
     readingMinutes: 3,
     image: '/images/daerah-jakarta.png',
     imageAlt: 'Penumpang naik kereta MRT di stasiun layang Jakarta pada jam sibuk sore hari',
-    imageCaption: 'Penumpang MRT pada jam sibuk di Jakarta. (Ilustrasi demo)',
+    imageCaption: 'Penumpang MRT pada jam sibuk di Jakarta.',
     tags: ['MRT', 'Transportasi Publik', 'Jakarta'],
     views: 34770,
+    is_demo: true,
     body: [
       'Operasional penuh MRT Jakarta Fase 2 hingga kawasan Kota Tua mendorong jumlah penumpang harian menembus 250 ribu orang pada pekan pertama.',
       'Direksi PT MRT Jakarta menyebut waktu tempuh dari Lebak Bulus ke Kota Tua kini sekitar 45 menit, jauh lebih cepat dibanding perjalanan darat pada jam sibuk.',
@@ -283,9 +293,10 @@ export const articles: Article[] = [
     readingMinutes: 4,
     image: '/images/daerah-makassar.png',
     imageAlt: 'Kapal layar kayu pinisi bersandar di pelabuhan saat matahari terbenam',
-    imageCaption: 'Kapal pinisi bersandar di pelabuhan rakyat, Sulawesi Selatan. (Ilustrasi demo)',
+    imageCaption: 'Kapal pinisi bersandar di pelabuhan rakyat, Sulawesi Selatan.',
     tags: ['Pinisi', 'Sulawesi Selatan', 'Ekonomi Kreatif', 'Maritim'],
     views: 9860,
+    is_demo: true,
     body: [
       'Galangan kapal pinisi di Tanah Beru, Bulukumba, Sulawesi Selatan, kebanjiran pesanan kapal wisata dari pembeli Eropa dan Australia.',
       'Seorang panrita lopi mengatakan antrean pesanan kini mencapai dua tahun. Satu kapal pinisi wisata berukuran sedang membutuhkan waktu pengerjaan delapan hingga sepuluh bulan.',
@@ -305,9 +316,10 @@ export const articles: Article[] = [
     readingMinutes: 3,
     image: '/images/daerah-yogyakarta.png',
     imageAlt: 'Jalan tradisional Yogyakarta yang ramai dengan becak dan pedagang kaki lima saat senja',
-    imageCaption: 'Suasana senja di kawasan Malioboro, Yogyakarta. (Ilustrasi demo)',
+    imageCaption: 'Suasana senja di kawasan Malioboro, Yogyakarta.',
     tags: ['Malioboro', 'Yogyakarta', 'Pariwisata', 'Ruang Publik'],
     views: 14320,
+    is_demo: true,
     body: [
       'Pemerintah Kota Yogyakarta memulai uji coba kawasan Malioboro bebas kendaraan bermotor setiap akhir pekan selama tiga bulan ke depan.',
       'Becak, andong, dan sepeda tetap diizinkan melintas. Pemerintah menyiapkan kantong parkir dan bus pengumpan di sejumlah titik sekitar kawasan.',
@@ -326,9 +338,10 @@ export const articles: Article[] = [
     readingMinutes: 4,
     image: '/images/ekonomi-rupiah.png',
     imageAlt: 'Tangan teller bank menghitung tumpukan uang kertas rupiah',
-    imageCaption: 'Petugas bank menghitung uang rupiah. (Ilustrasi demo)',
+    imageCaption: 'Petugas bank menghitung uang rupiah.',
     tags: ['Bank Indonesia', 'Suku Bunga', 'Rupiah', 'Moneter'],
     views: 25690,
+    is_demo: true,
     body: [
       'Rapat Dewan Gubernur Bank Indonesia memutuskan mempertahankan suku bunga acuan BI-Rate di level 5,25 persen.',
       'Gubernur Bank Indonesia menyatakan keputusan tersebut konsisten dengan upaya menjaga inflasi dalam sasaran dan stabilitas nilai tukar rupiah di tengah gejolak pasar keuangan global.',
@@ -347,9 +360,10 @@ export const articles: Article[] = [
     readingMinutes: 3,
     image: '/images/olahraga-bulutangkis.png',
     imageAlt: 'Pemain bulu tangkis melompat melakukan smes di arena dalam ruangan',
-    imageCaption: 'Smes keras di partai final ganda putra. (Ilustrasi demo)',
+    imageCaption: 'Smes keras di partai final ganda putra.',
     tags: ['Bulu Tangkis', 'Denmark Open', 'BWF'],
     views: 29880,
+    is_demo: true,
     body: [
       'Ganda putra Indonesia keluar sebagai juara Denmark Open setelah menundukkan unggulan pertama asal Tiongkok melalui pertarungan tiga gim yang menegangkan di Odense.',
       'Pada gim penentuan, pasangan Indonesia sempat tertinggal 17-20 sebelum membalikkan keadaan dan menutup laga dengan skor 23-21.',

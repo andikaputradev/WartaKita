@@ -3,6 +3,7 @@ import { Eye, TrendingUp } from 'lucide-react'
 import { formatViews, getPopularArticles, trendingTopics } from '@/lib/news'
 import { SectionHeading } from './section-heading'
 import { CategoryLabel } from './category-label'
+import { AdSlot } from './ad-slot'
 
 export function NewsSidebar({ excludeSlug }: { excludeSlug?: string }) {
   const popular = getPopularArticles(6)
@@ -58,10 +59,7 @@ export function NewsSidebar({ excludeSlug }: { excludeSlug?: string }) {
         </ul>
       </section>
 
-      <div className="flex aspect-[6/5] flex-col items-center justify-center border border-dashed border-border bg-muted/50 p-6 text-center">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">Ruang Iklan</p>
-        <p className="mt-2 text-sm text-muted-foreground">300 × 250 — slot iklan demo</p>
-      </div>
+      <AdSlot className="w-full" />
     </aside>
   )
 }

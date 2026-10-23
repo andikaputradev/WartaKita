@@ -4,7 +4,7 @@ import { Inter, Source_Serif_4 } from 'next/font/google'
 import { BreakingTicker } from '@/components/news/breaking-ticker'
 import { SiteHeader } from '@/components/news/site-header'
 import { SiteFooter } from '@/components/news/site-footer'
-import { SITE_NAME, SITE_URL } from '@/lib/news'
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL, isIndexingEnabled } from '@/lib/site'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
@@ -13,19 +13,48 @@ const sourceSerif = Source_Serif_4({ subsets: ['latin'], variable: '--font-sourc
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE_NAME} — Berita Terkini Indonesia Hari Ini`,
+    default: `${SITE_NAME} | Berita Terkini Indonesia Hari Ini`,
     template: `%s | ${SITE_NAME}`,
   },
-  description:
-    'Nusantara News menyajikan berita terkini nasional, daerah, politik, ekonomi, olahraga, teknologi, dan gaya hidup dari seluruh penjuru Indonesia.',
+  description: SITE_DESCRIPTION,
   keywords: ['berita indonesia', 'berita terkini', 'nasional', 'daerah', 'politik', 'ekonomi', 'olahraga'],
-  generator: 'v0.app',
+  robots: isIndexingEnabled
+    ? {
+        index: true,
+        follow: true,
+      }
+    : {
+        index: false,
+        follow: false,
+        nocache: true,
+        googleBot: {
+          index: false,
+          follow: false,
+          noimageindex: true,
+        },
+      },
   openGraph: {
     type: 'website',
     locale: 'id_ID',
     siteName: SITE_NAME,
+    title: `${SITE_NAME} | Berita Terkini Indonesia Hari Ini`,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: `${SITE_NAME}: Kabar Terpercaya, Dekat dengan Kita`,
+      },
+    ],
   },
-  twitter: { card: 'summary_large_image' },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${SITE_NAME} | Berita Terkini Indonesia Hari Ini`,
+    description: SITE_DESCRIPTION,
+    images: ['/og-image.png'],
+  },
   icons: {
     icon: [
       { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
@@ -34,6 +63,7 @@ export const metadata: Metadata = {
     ],
     apple: '/apple-icon.png',
   },
+  manifest: '/manifest.webmanifest',
 }
 
 export const viewport: Viewport = {

@@ -5,14 +5,13 @@ import { SectionHeading } from '@/components/news/section-heading'
 import { NewsSidebar } from '@/components/news/news-sidebar'
 import { RegionalNews, type RegionalItem } from '@/components/news/regional-news'
 import { Newsletter } from '@/components/news/newsletter'
-import { DemoNotice } from '@/components/news/demo-notice'
 
 export default function HomePage() {
   const nonRegional = sortByDate(articles.filter((a) => a.category !== 'daerah'))
-  const [main, ...rest] = nonRegional
-  const secondary = rest.slice(0, 3)
-  const usedSlugs = new Set([main.slug, ...secondary.map((a) => a.slug)])
-  const latest = rest.filter((a) => !usedSlugs.has(a.slug)).slice(0, 6)
+  const main = nonRegional[0]
+  const secondary = nonRegional.slice(1, 4)
+  const usedSlugs = new Set(nonRegional.slice(0, 4).map((a) => a.slug))
+  const latest = nonRegional.filter((a) => !usedSlugs.has(a.slug)).slice(0, 6)
 
   const regional: RegionalItem[] = getArticlesByCategory('daerah').map((a) => ({
     slug: a.slug,
@@ -32,8 +31,7 @@ export default function HomePage() {
   return (
     <>
       <div className="mx-auto max-w-7xl px-4 pt-6 md:pt-8">
-        <DemoNotice className="mb-6" />
-        <FeaturedSection main={main} secondary={secondary} />
+        {main && <FeaturedSection main={main} secondary={secondary} />}
       </div>
 
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 lg:grid-cols-3 lg:gap-8">

@@ -18,7 +18,7 @@ import { ShareButtons } from '@/components/news/share-buttons'
 import { ArticleCard } from '@/components/news/article-card'
 import { SectionHeading } from '@/components/news/section-heading'
 import { NewsSidebar } from '@/components/news/news-sidebar'
-import { DemoNotice } from '@/components/news/demo-notice'
+import { jsonLdScript } from '@/lib/json-ld'
 
 export function generateStaticParams() {
   return articles.map((a) => ({ slug: a.slug }))
@@ -37,11 +37,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: article.title,
     description: article.excerpt,
     alternates: {
-      canonical: `/artikel/${article.slug}`,
+      canonical: `/berita/${article.slug}`,
     },
     openGraph: {
       type: 'article',
-      url: `/artikel/${article.slug}`,
+      url: `/berita/${article.slug}`,
       siteName: SITE_NAME,
       title: article.title,
       description: article.excerpt,
@@ -83,7 +83,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 md:py-10">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(jsonLd) }} />
 
       <nav aria-label="Breadcrumb" className="text-xs text-muted-foreground">
         <ol className="flex flex-wrap items-center gap-1.5">
@@ -162,8 +162,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               {article.imageCaption}
             </figcaption>
           </figure>
-
-          <DemoNotice className="mt-6" />
 
           <div className="mt-6 max-w-2xl font-serif text-lg leading-[1.8] text-foreground">
             {article.body.map((paragraph, i) => (

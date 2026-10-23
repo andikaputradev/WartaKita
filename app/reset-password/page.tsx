@@ -93,7 +93,7 @@ export default function ResetPasswordPage() {
         </h1>
 
         <p className="text-sm text-gray-600">
-          Buat password baru untuk akun admin Nusantara News.
+          Buat password baru untuk akun admin WartaKita.
         </p>
 
         {ready ? (

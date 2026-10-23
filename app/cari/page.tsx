@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Cari Berita',
-  description: 'Cari berita terkini dari seluruh kanal Nusantara News.',
+  description: 'Cari berita terkini dari seluruh kanal WartaKita.',
   robots: { index: false },
 }
 
@@ -36,7 +36,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
               name="q"
               type="search"
               defaultValue={query}
-              placeholder="Cari berita, topik, atau provinsi…"
+              placeholder="Cari berita, topik, atau provinsi..."
               className="h-11 w-full border border-input bg-background pl-9 pr-4 text-sm outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring/30"
             />
           </div>

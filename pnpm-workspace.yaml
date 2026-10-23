@@ -3,3 +3,13 @@ pmOnFail: ignore
 minimumReleaseAgeExclude:
   - '@next/*'
   - next
+  - baseline-browser-mapping@2.11.31
+
+allowBuilds:
+  unrs-resolver: true
+
+overrides:
+  nanoid@<3.3.18: '>=3.3.18'
+  browserslist: ^4.29.4
+  baseline-browser-mapping: ^2.11.31
+  source-map-js: ^1.2.2

@@ -132,7 +132,7 @@ export default function AdminPage() {
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
           <div>
             <p className="text-sm font-semibold uppercase tracking-wider text-blue-700">
-              Nusantara News
+              WartaKita
             </p>
             <h1 className="mt-1 text-3xl font-bold text-gray-900">
               Dashboard Admin
