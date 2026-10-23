@@ -65,3 +65,22 @@ Tumpukan teknologi terkunci dan dilarang diganti:
 - Batasan Hukum: Dilarang keras menyalin logo, gambar berhak cipta, teks berita, kode sumber, atau berkas font berlisensi dari detik.com maupun situs pihak ketiga lainnya.
 - Identitas Visual: Identitas visual WartaKita harus unik, orisinal, dan memiliki diferensiasi yang jelas dari merek lain.
 - Integritas Jurnalistik: Dilarang mempublikasikan berita fiktif atau klaim palsu sebagai berita nyata di lingkungan produksi.
+
+---
+
+## 8. Konfigurasi Pencarian Teks Penuh (Full-Text Search) PostgreSQL
+
+- Ketersediaan Konfigurasi Teks: Kueri `select cfgname from pg_ts_config` pada server PostgreSQL mengonfirmasi bahwa konfigurasi teks bahasa Indonesia (`indonesian`) tersedia secara bawaan.
+- Keputusan Algoritma Pencarian: Kolom pencarian `search` bertipe `tsvector` di tabel `articles` menggunakan konfigurasi `indonesian` (`to_tsvector('indonesian', coalesce(title, '') || ' ' || coalesce(excerpt, ''))`).
+- Dukungan Trigram: Ekstensi `pg_trgm` diaktifkan untuk melengkapi pencarian teks penuh dengan kemampuan trigram similarity dan fuzzy matching pada judul artikel.
+
+---
+
+## 9. Arsitektur Data, Keamanan RLS, dan Isolasi Service-Role
+
+- Skema Entitas Relasional: Diterapkan 13 tabel migrasi terurut (`profiles`, `categories`, `tags`, `articles`, `article_tags`, `article_revisions`, `audit_log`, `featured_slots`, `breaking_news`, `redirects`, `site_settings`, `media_assets`, `newsletter_subscribers`).
+- Penegakan Hak Akses RLS: Seluruh tabel memiliki `ENABLE ROW LEVEL SECURITY` dan `FORCE ROW LEVEL SECURITY`. Helper `has_role(roles)` ditetapkan dengan `SECURITY DEFINER` dan `SET search_path = public, auth`.
+- Isolasi Kunci Service-Role: Klien `lib/supabase/admin.ts` diproteksi dua lapis: compiler Next.js (`import 'server-only'`) dan linter ESLint (`no-restricted-imports`) untuk mencegah kebocoran kunci rahasia ke bundle klien.
+- Strategi Caching dan Ketahanan Sistem: Lapisan data di `lib/data/` menggunakan `unstable_cache` (`revalidate: 60`, tagged revalidation). Jika database belum terhubung atau sedang offline saat proses build/deploy, sistem menerapkan fallback anggun ke data mock tanpa menimbulkan error 500.
+- Penghitung Kunjungan (View Counter): Endpoint `POST /api/views` menyaring bot pencari secara ketat dan mendeduplikasi permintaan per jam per IP menggunakan hash SHA-256 tersalt, sebelum memanggil RPC atomik `increment_article_views`.
+

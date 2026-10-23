@@ -2,16 +2,25 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Award, Eye, Hash, TrendingUp } from 'lucide-react'
 import { formatViews, getEditorialPicks, getPopularArticles, trendingTopics } from '@/lib/news'
+import type { DomainArticle } from '@/lib/data/types'
 import { CategoryLabel } from './category-label'
 import { RelativeTime } from './relative-time'
 import { AdSlot } from './ad-slot'
 
-export function NewsSidebar({ excludeSlug }: { excludeSlug?: string }) {
-  const popular = getPopularArticles(6)
+export function NewsSidebar({
+  excludeSlug,
+  popularArticles,
+  editorialPicks,
+}: {
+  excludeSlug?: string
+  popularArticles?: DomainArticle[]
+  editorialPicks?: DomainArticle[]
+}) {
+  const popular = (popularArticles ?? getPopularArticles(6))
     .filter((a) => a.slug !== excludeSlug)
     .slice(0, 5)
 
-  const editorial = getEditorialPicks(3).filter((a) => a.slug !== excludeSlug)
+  const editorial = (editorialPicks ?? getEditorialPicks(3)).filter((a) => a.slug !== excludeSlug)
 
   return (
     <aside className="flex flex-col gap-8 w-full" aria-label="Kolom samping berita">

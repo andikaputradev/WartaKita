@@ -6,6 +6,7 @@ minimumReleaseAgeExclude:
   - baseline-browser-mapping@2.11.31
 
 allowBuilds:
+  esbuild: true
   unrs-resolver: true
 
 overrides:

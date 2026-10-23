@@ -1,10 +1,10 @@
+import { formatShortDate } from '@/lib/news'
 import {
-  articles,
-  categories,
-  formatShortDate,
-  getArticlesByCategory,
-  sortByDate,
-} from '@/lib/news'
+  getPublishedArticles,
+  getCategories,
+  getPopularArticles,
+  getEditorialPicks,
+} from '@/lib/data'
 import { HeadlineBlock } from '@/components/news/headline-block'
 import { NewsFeed } from '@/components/news/news-feed'
 import { NewsSidebar } from '@/components/news/news-sidebar'
@@ -12,23 +12,32 @@ import { ChannelBlock, PhotoBlock } from '@/components/news/channel-block'
 import { RegionalNews, type RegionalItem } from '@/components/news/regional-news'
 import { Newsletter } from '@/components/news/newsletter'
 
-export default function HomePage() {
-  const sorted = sortByDate(articles)
+export default async function HomePage() {
+  const [{ articles }, categories, popularArticles, editorialPicks] = await Promise.all([
+    getPublishedArticles({ limit: 50 }),
+    getCategories(),
+    getPopularArticles(6),
+    getEditorialPicks(3),
+  ])
+
+  const sorted = [...articles].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
   const nonRegional = sorted.filter((a) => a.category !== 'daerah')
 
-  const headlineArticle = nonRegional[0] ?? articles[0]!
+  const headlineArticle = nonRegional[0] ?? sorted[0]!
   const briefArticles = nonRegional.slice(1, 6)
   const feedArticles = sorted.slice(0, 8)
 
-  const regionalItems: RegionalItem[] = getArticlesByCategory('daerah').map((a) => ({
-    slug: a.slug,
-    title: a.title,
-    province: a.province ?? 'Indonesia',
-    image: a.image,
-    imageAlt: a.imageAlt,
-    publishedAt: a.publishedAt,
-    dateLabel: formatShortDate(a.publishedAt),
-  }))
+  const regionalItems: RegionalItem[] = sorted
+    .filter((a) => a.category === 'daerah')
+    .map((a) => ({
+      slug: a.slug,
+      title: a.title,
+      province: a.province ?? 'Indonesia',
+      image: a.image,
+      imageAlt: a.imageAlt,
+      publishedAt: a.publishedAt,
+      dateLabel: formatShortDate(a.publishedAt),
+    }))
 
   const featuredChannels = categories
     .filter((c) => c.slug !== 'daerah')
@@ -36,7 +45,7 @@ export default function HomePage() {
       category: c.slug,
       title: c.name,
       href: `/kategori/${c.slug}`,
-      articles: getArticlesByCategory(c.slug),
+      articles: sorted.filter((a) => a.category === c.slug),
     }))
     .filter((block) => block.articles.length > 0)
 
@@ -58,55 +67,42 @@ export default function HomePage() {
               currentPage={1}
               totalPages={3}
               basePath="/cari"
-              title="Berita Terkini Hari Ini"
             />
 
-            {/* Photo Gallery Block */}
-            <PhotoBlock articles={sorted.slice(0, 4)} />
+            {/* Berita Daerah Grid (Pola Kanal Regional) */}
+            {regionalItems.length > 0 && <RegionalNews items={regionalItems} />}
 
-            {/* Channel Blocks */}
-            <div className="flex flex-col gap-10">
-              {featuredChannels.slice(0, 3).map((block) => (
+            {/* Featured Channel Blocks (Grid & List ala portal berita) */}
+            <div className="flex flex-col gap-8">
+              {featuredChannels.map((block) => (
                 <ChannelBlock
                   key={block.category}
-                  category={block.category}
                   title={block.title}
+                  category={block.category}
                   href={block.href}
                   articles={block.articles}
                 />
               ))}
             </div>
+
+            {/* Photo Gallery Grid */}
+            <PhotoBlock
+              articles={sorted.slice(0, 4)}
+            />
           </div>
 
-          {/* Sidebar Column: Fixed 300px width on desktop */}
-          <div className="lg:col-span-4 lg:sticky lg:top-36 lg:self-start">
-            <NewsSidebar />
+          {/* Right Sidebar (Sticky on lg) */}
+          <div className="lg:col-span-4">
+            <div className="sticky top-28 flex flex-col gap-8">
+              <NewsSidebar
+                popularArticles={popularArticles}
+                editorialPicks={editorialPicks}
+              />
+              <Newsletter />
+            </div>
           </div>
         </div>
       </div>
-
-      {/* 3. Regional News Section */}
-      <RegionalNews items={regionalItems} />
-
-      {/* 4. Additional Channel Blocks */}
-      {featuredChannels.length > 3 && (
-        <div className="mx-auto w-full max-w-[1160px] px-4">
-          <div className="grid gap-8 md:grid-cols-2">
-            {featuredChannels.slice(3).map((block) => (
-              <ChannelBlock
-                key={block.category}
-                category={block.category}
-                title={block.title}
-                href={block.href}
-                articles={block.articles}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* 5. Newsletter Section */}
-      <Newsletter />
     </div>
   )
 }

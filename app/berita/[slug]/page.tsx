@@ -8,10 +8,10 @@ import {
   SITE_URL,
   articles,
   formatViews,
-  getArticle,
   getCategory,
-  getRelatedArticles,
 } from '@/lib/news'
+import { getArticleBySlug, getRelatedArticles } from '@/lib/data'
+import { ViewTracker } from '@/components/news/view-tracker'
 import { formatAbsoluteDateWIB } from '@/lib/time'
 import { CategoryLabel } from '@/components/news/category-label'
 import { ShareButtons } from '@/components/news/share-buttons'
@@ -26,7 +26,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
-  const article = getArticle(slug)
+  const article = await getArticleBySlug(slug)
   if (!article) return { title: 'Berita tidak ditemukan' }
 
   const imageUrl = /^https?:\/\//i.test(article.image)
@@ -60,11 +60,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const article = getArticle(slug)
+  const article = await getArticleBySlug(slug)
   if (!article) notFound()
 
   const category = getCategory(article.category)
-  const related = getRelatedArticles(article, 3)
+  const related = await getRelatedArticles(article, 3)
   const bacaJugaArticle = related[0]
 
   const initials = article.author
@@ -93,6 +93,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   return (
     <div className="mx-auto max-w-[1160px] px-4 py-6 md:py-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(jsonLd) }} />
+      <ViewTracker slug={article.slug} />
 
       {/* Breadcrumb Navigation */}
       <nav aria-label="Breadcrumb" className="text-xs text-muted-foreground mb-4">

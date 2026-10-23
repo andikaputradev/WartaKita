@@ -34,13 +34,14 @@ export default function AdminPage() {
         return;
       }
 
-      const { data: admin, error: adminError } = await supabase
-        .from("admin_users")
-        .select("user_id")
-        .eq("user_id", data.user.id)
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("id, role, is_active")
+        .eq("id", data.user.id)
+        .eq("is_active", true)
         .maybeSingle();
 
-      if (adminError || !admin) {
+      if (profileError || !profile || !["admin", "editor", "writer"].includes(profile.role)) {
         await supabase.auth.signOut();
         router.replace("/login");
         return;
@@ -83,21 +84,40 @@ export default function AdminPage() {
         return;
       }
 
-      const { data: admin, error: adminError } = await supabase
-        .from("admin_users")
-        .select("user_id")
-        .eq("user_id", authData.user.id)
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("id, role, is_active")
+        .eq("id", authData.user.id)
+        .eq("is_active", true)
         .maybeSingle();
 
-      if (adminError || !admin) {
-        setMessage("Akun ini tidak memiliki akses admin.");
+      if (profileError || !profile || !["admin", "editor", "writer"].includes(profile.role)) {
+        setMessage("Akun ini tidak memiliki akses manajemen.");
         return;
       }
 
+      const catSlug = form.category.toLowerCase();
+      const { data: categoryRecord } = await supabase
+        .from("categories")
+        .select("id")
+        .eq("slug", catSlug)
+        .maybeSingle();
+
+      const slugBase = form.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+      const slug = (slugBase.length >= 3 ? slugBase : `draft-${Date.now()}`).slice(0, 100);
+
       const { error } = await supabase.from("articles").insert({
         title: form.title.trim(),
-        category: form.category,
-        content: form.content.trim(),
+        slug,
+        excerpt: form.content.trim().slice(0, 200),
+        body_html: `<p>${form.content.trim()}</p>`,
+        body_json: [form.content.trim()],
+        status: "draft",
+        author_id: authData.user.id,
+        category_id: categoryRecord?.id ?? null,
       });
 
       if (error) {
